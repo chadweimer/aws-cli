@@ -21,9 +21,9 @@ script:
       docker push cwmr/aws-cli:arm
       ./manifest-tool push from-args --platforms linux/amd64,linux/arm --template cwmr/aws-cli:ARCH --target cwmr/aws-cli:latest
       TAG=$(grep "ENV AWS_CLI_VERSION" Dockerfile | awk 'NF>1{print $NF}')
-      docker tag cwmr/gomp:amd64 cwmr/gomp:$TAG-amd64
-      docker tag cwmr/gomp:arm cwmr/gomp:$TAG-arm
-      docker push cwmr/gomp:$TAG-amd64
-      docker push cwmr/gomp:$TAG-arm
-      ./manifest-tool push from-args --platforms linux/amd64,linux/arm --template cwmr/gomp:$TAG-ARCH --target cwmr/gomp:$TAG
+      docker tag cwmr/aws-cli:amd64 cwmr/aws-cli:$TAG-amd64
+      docker tag cwmr/aws-cli:arm cwmr/aws-cli:$TAG-arm
+      docker push cwmr/aws-cli:$TAG-amd64
+      docker push cwmr/aws-cli:$TAG-arm
+      ./manifest-tool push from-args --platforms linux/amd64,linux/arm --template cwmr/aws-cli:$TAG-ARCH --target cwmr/aws-cli:$TAG
     fi
