@@ -1,4 +1,3 @@
-
 sudo: required
 
 services:
@@ -13,7 +12,6 @@ script:
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   - docker build -t cwmr/aws-cli:arm -f Docekrfile.armhf .
   # push image
-- >
   - wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
   - chmod +x ./manifest-tool
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
