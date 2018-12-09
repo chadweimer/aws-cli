@@ -1,6 +1,8 @@
-FROM alpine:3.7
+ARG IMAGE=alpine:3.8
 
-ENV AWS_CLI_VERSION 1.15.50
+FROM $IMAGE
+
+ENV AWS_CLI_VERSION 1.16.72
 
 RUN apk --no-cache update && \
     apk --no-cache add python py-pip py-setuptools ca-certificates groff less && \
