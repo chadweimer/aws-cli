@@ -12,18 +12,16 @@ script:
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   - docker build --build-arg IMAGE=multiarch/alpine:armhf-v3.8 -t cwmr/aws-cli:arm .
   # push image
-  - wget -O manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
-  - chmod +x ./manifest-tool
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
   - >
     if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
       docker push cwmr/aws-cli:amd64
       docker push cwmr/aws-cli:arm
-      ./manifest-tool push from-args --platforms linux/amd64,linux/arm --template cwmr/aws-cli:ARCH --target cwmr/aws-cli:latest
+      docker run --rm mplatform/manifest-tool --username $DOCKER_USER --password $DOCKER_PASS push from-args --platforms linux/amd64,linux/arm --template cwmr/aws-cli:ARCH --target cwmr/aws-cli:latest
       TAG=$(grep "ENV AWS_CLI_VERSION" Dockerfile | awk 'NF>1{print $NF}')
       docker tag cwmr/aws-cli:amd64 cwmr/aws-cli:$TAG-amd64
       docker tag cwmr/aws-cli:arm cwmr/aws-cli:$TAG-arm
       docker push cwmr/aws-cli:$TAG-amd64
       docker push cwmr/aws-cli:$TAG-arm
-      ./manifest-tool push from-args --platforms linux/amd64,linux/arm --template cwmr/aws-cli:$TAG-ARCH --target cwmr/aws-cli:$TAG
+      docker run --rm mplatform/manifest-tool --username $DOCKER_USER --password $DOCKER_PASS push from-args --platforms linux/amd64,linux/arm --template cwmr/aws-cli:$TAG-ARCH --target cwmr/aws-cli:$TAG
     fi
