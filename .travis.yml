@@ -10,7 +10,7 @@ script:
   - docker build -t cwmr/aws-cli:amd64 .
   # build armhf image
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-  - docker build --build-arg IMAGE=multiarch/alpine:armhf-v3.10 -t cwmr/aws-cli:arm .
+  - docker build --build-arg IMAGE=multiarch/alpine:armhf-v3.12 -t cwmr/aws-cli:arm .
   # push image
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
   - >
