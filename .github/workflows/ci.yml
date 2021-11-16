@@ -18,9 +18,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker buildx build --push --platform linux/amd64,linux/arm,linux/arm64 -t cwmr/aws-cli:dev .
+      - run: |
+          TAG=dev
+          docker buildx build --push --platform linux/amd64,linux/arm,linux/arm64 -t cwmr/aws-cli:$TAG .
         if: startswith(github.ref, 'refs/pull/')
       - run: |
           TAG=$(grep "ENV AWS_CLI_VERSION" Dockerfile | awk 'NF>1{print $NF}')
-          docker buildx build --push --platform linux/amd64,linux/arm,linux/arm64 -t cwmr/aws-cli:$(TAG) .
+          docker buildx build --push --platform linux/amd64,linux/arm,linux/arm64 -t cwmr/aws-cli:$TAG .
         if: startsWith(github.ref, 'refs/heads/master')
