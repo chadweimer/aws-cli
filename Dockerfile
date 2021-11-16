@@ -1,8 +1,8 @@
-ARG IMAGE=alpine:3.12
+ARG IMAGE=alpine:3.14
 
 FROM $IMAGE
 
-ENV AWS_CLI_VERSION 1.18.85
+ENV AWS_CLI_VERSION 1.22.6
 
 RUN apk --no-cache update && \
     apk --no-cache add python3 py3-pip py3-setuptools ca-certificates groff less && \
