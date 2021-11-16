@@ -1,0 +1,26 @@
+name: Continuous Integration
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/setup-buildx-action@v1
+      - uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm,arm64
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: docker buildx build --push --platform linux/amd64,linux/arm,linux/arm64 -t cwmr/aws-cli:dev .
+        if: startswith(github.ref, 'refs/pull/')
+      - run: |
+          TAG=$(grep "ENV AWS_CLI_VERSION" Dockerfile | awk 'NF>1{print $NF}')
+          docker buildx build --push --platform linux/amd64,linux/arm,linux/arm64 -t cwmr/aws-cli:$(TAG) .
+        if: startsWith(github.ref, 'refs/heads/master/')

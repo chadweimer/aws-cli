@@ -1,12 +1,10 @@
-ARG IMAGE=alpine:3.12
+FROM alpine:3.14
+ARG TARGETPLATFORM
+LABEL maintainer="ch@dweimer.com"
 
-FROM $IMAGE
+ENV AWS_CLI_VERSION 1.22.6
 
-ENV AWS_CLI_VERSION 1.18.85
-
-RUN apk --no-cache update && \
-    apk --no-cache add python3 py3-pip py3-setuptools ca-certificates groff less && \
-    pip3 --no-cache-dir install awscli==${AWS_CLI_VERSION} && \
-    rm -rf /var/cache/apk/*
+RUN apk add --no-cache python3 py3-pip py3-setuptools ca-certificates groff less && \
+    pip3 --no-cache-dir install awscli==${AWS_CLI_VERSION}
 
 WORKDIR /data
